@@ -13,7 +13,7 @@ interface CarouselSlide {
 }
 
 const HeroCarousel = () => {
-    const [currentSlide, setCurrentSlide] = useState(0);
+    const [currentSlide] = useState(0);
 
     const slides: CarouselSlide[] = [
         {
