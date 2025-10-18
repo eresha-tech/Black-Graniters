@@ -1,253 +1,209 @@
-import { useState, useEffect, useRef } from 'react';
-import { Button } from './ui/button';
-import { ArrowRight } from 'lucide-react';
-
-interface ProductCard {
-  id: number;
-  image: string;
-  title: string;
-  location: string;
-  ctaText: string;
-  ctaLink: string;
-}
+import { useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useInView } from 'framer-motion';
+import { Sparkles, Shield, Award, Globe, ArrowRight } from 'lucide-react';
 
 const QualityProductsSection = () => {
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [dragDistance, setDragDistance] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const products: ProductCard[] = [
+  const features = [
     {
-      id: 1,
-      image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      title: 'Organic Garden',
-      location: 'California, USA',
-      ctaText: 'Explore Products',
-      ctaLink: '#organic'
+      icon: Sparkles,
+      title: "Premium Quality",
+      description: "Sourced from the finest quarries across India with strict quality control",
+      color: "from-[#F7A145] to-[#e89035]"
     },
     {
-      id: 2,
-      image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      title: 'Fresh Produce',
-      location: 'Texas, USA',
-      ctaText: 'Shop Now',
-      ctaLink: '#fresh'
+      icon: Shield,
+      title: "Durability",
+      description: "Natural stones built to last generations with minimal maintenance",
+      color: "from-[#502b21] to-[#7a3f2e]"
     },
     {
-      id: 3,
-      image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      title: 'Premium Quality',
-      location: 'Florida, USA',
-      ctaText: 'Learn More',
-      ctaLink: '#premium'
+      icon: Award,
+      title: "Expert Craftsmanship",
+      description: "Skilled artisans ensuring perfect finishing and precision",
+      color: "from-[#F7A145] to-[#e89035]"
     },
     {
-      id: 4,
-      image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      title: 'Sustainable Farming',
-      location: 'Oregon, USA',
-      ctaText: 'Discover',
-      ctaLink: '#sustainable'
-    },
-    {
-      id: 5,
-      image: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      title: 'Greenhouse Growing',
-      location: 'Washington, USA',
-      ctaText: 'View Details',
-      ctaLink: '#greenhouse'
+      icon: Globe,
+      title: "Global Reach",
+      description: "Trusted by clients in 100+ countries worldwide",
+      color: "from-[#502b21] to-[#7a3f2e]"
     }
   ];
 
-  // Auto-scroll functionality
-  useEffect(() => {
-    if (!isDragging) {
-      autoScrollRef.current = setInterval(() => {
-        setCurrentIndex(prev => (prev + 1) % products.length);
-      }, 3000);
-    }
-
-    return () => {
-      if (autoScrollRef.current) {
-        clearInterval(autoScrollRef.current);
-      }
-    };
-  }, [isDragging, products.length]);
-
-  // Mouse drag handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setStartX(e.pageX);
-    setDragDistance(0);
-    
-    if (autoScrollRef.current) {
-      clearInterval(autoScrollRef.current);
-    }
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    
-    e.preventDefault();
-    const distance = e.pageX - startX;
-    setDragDistance(distance);
-  };
-
-  const handleMouseUp = () => {
-    if (isDragging && Math.abs(dragDistance) > 50) {
-      if (dragDistance > 0) {
-        // Dragged right, go to previous
-        setCurrentIndex(prev => prev === 0 ? products.length - 1 : prev - 1);
-      } else {
-        // Dragged left, go to next
-        setCurrentIndex(prev => (prev + 1) % products.length);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
       }
     }
-    setIsDragging(false);
-    setDragDistance(0);
   };
 
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-    setDragDistance(0);
+  const itemVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 }
   };
 
-  // Touch handlers for mobile
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    setStartX(e.touches[0].pageX);
-    setDragDistance(0);
-    
-    if (autoScrollRef.current) {
-      clearInterval(autoScrollRef.current);
-    }
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging) return;
-    
-    const distance = e.touches[0].pageX - startX;
-    setDragDistance(distance);
-  };
-
-  const handleTouchEnd = () => {
-    if (isDragging && Math.abs(dragDistance) > 50) {
-      if (dragDistance > 0) {
-        // Dragged right, go to previous
-        setCurrentIndex(prev => prev === 0 ? products.length - 1 : prev - 1);
-      } else {
-        // Dragged left, go to next
-        setCurrentIndex(prev => (prev + 1) % products.length);
-      }
-    }
-    setIsDragging(false);
-    setDragDistance(0);
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1 }
   };
 
   return (
-    <section className="py-20 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={ref} className="py-20 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-[#F7A145]/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#502b21]/10 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Quality Products
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-            laboris nisi ut aliquip ex ea commodo consequat.
-          </p>
-        </div>
-
-        {/* Image Carousel - 80% height */}
-        <div className="relative max-w-6xl mx-auto">
-          <div className="relative h-[500px] flex items-center justify-center overflow-hidden">
-            {products.map((product, index) => {
-              const position = index - currentIndex;
-              const isActive = index === currentIndex;
-              const isLeft = position < 0;
-              const isAdjacent = Math.abs(position) === 1;
-              
-              return (
-                <div
-                  key={product.id}
-                  className={`absolute transition-all duration-700 ease-in-out ${
-                    isActive
-                      ? 'z-20 scale-100 opacity-100 transform translate-x-0 rotate-0'
-                      : isAdjacent
-                      ? `z-10 scale-90 opacity-70 ${
-                          isLeft 
-                            ? 'transform -translate-x-64 -rotate-12' 
-                            : 'transform translate-x-64 rotate-12'
-                        }`
-                      : 'z-0 scale-75 opacity-0 transform translate-x-0'
-                  } ${
-                    isDragging ? 'cursor-grabbing' : 'cursor-grab'
-                  }`}
-                  style={{ userSelect: 'none' }}
-                  onMouseDown={handleMouseDown}
-                  onMouseMove={handleMouseMove}
-                  onMouseUp={handleMouseUp}
-                  onMouseLeave={handleMouseLeave}
-                  onTouchStart={handleTouchStart}
-                  onTouchMove={handleTouchMove}
-                  onTouchEnd={handleTouchEnd}
-                >
-                  {/* Pure Image - No Card Wrapper */}
-                  <div className="relative rounded-2xl overflow-hidden shadow-2xl w-80 h-96">
-                    <img
-                      src={product.image}
-                      alt={product.title}
-                      className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                      draggable={false}
-                    />
-                    
-                    {/* Drag Indicator - only show on active image */}
-                    {isActive && (
-                      <div className="absolute top-4 right-4 bg-secondary/90 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium text-primary">
-                        Drag
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Separate Text Content Below Images */}
-        <div className="text-center mt-12">
-          <h3 className="text-2xl font-bold text-foreground mb-2">
-            {products[currentIndex].title}
-          </h3>
-          <p className="text-muted-foreground mb-6">
-            {products[currentIndex].location}
-          </p>
-          <Button
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 group font-semibold"
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={isInView ? { scale: 1 } : { scale: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="inline-block mb-4"
           >
-            {products[currentIndex].ctaText}
-            <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </Button>
-        </div>
+            <span className="bg-gradient-to-r from-[#F7A145] to-[#e89035] text-white px-6 py-2 rounded-full text-sm font-semibold uppercase tracking-wider shadow-lg">
+              Why Choose Us
+            </span>
+          </motion.div>
+          
+          <h2 className="text-4xl md:text-5xl font-bold text-[#502b21] mb-6">
+            Unmatched Quality & Excellence
+          </h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            For over 17 years, we've been delivering premium natural stones that combine 
+            timeless beauty with exceptional durability. Our commitment to quality is unwavering.
+          </p>
+        </motion.div>
 
-        {/* Navigation Dots */}
-        <div className="flex justify-center mt-8 space-x-2">
-          {products.map((_, index) => (
-            <button
-              key={index}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentIndex
-                  ? 'bg-secondary w-8'
-                  : 'bg-border hover:bg-muted-foreground'
-              }`}
-              onClick={() => setCurrentIndex(index)}
-            />
-          ))}
-        </div>
+        {/* Features Grid with Glassmorphism */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
+        >
+          {features.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
+              <motion.div
+                key={index}
+                variants={cardVariants}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                whileHover={{ y: -10, scale: 1.02 }}
+                className="group relative"
+              >
+                {/* Glassmorphism Card */}
+                <div className="relative backdrop-blur-lg bg-white/70 border border-white/20 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 h-full">
+                  {/* Gradient Background on Hover */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-300`}></div>
+                  
+                  {/* Icon with Gradient Background */}
+                  <div className="relative mb-4">
+                    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                      <Icon className="text-white" size={28} />
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-xl font-bold text-[#502b21] mb-3 group-hover:text-[#F7A145] transition-colors">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+
+        {/* Stats Section with Glassmorphism */}
+        <motion.div
+          variants={itemVariants}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="relative backdrop-blur-xl bg-gradient-to-r from-[#502b21] to-[#7a3f2e] rounded-3xl p-12 shadow-2xl overflow-hidden"
+        >
+          {/* Decorative Pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0" style={{
+              backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+              backgroundSize: '40px 40px'
+            }}></div>
+          </div>
+
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-white">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <div className="text-5xl font-bold mb-2 text-[#F7A145]">17+</div>
+              <div className="text-lg text-white/90">Years of Excellence</div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <div className="text-5xl font-bold mb-2 text-[#F7A145]">100+</div>
+              <div className="text-lg text-white/90">Countries Served</div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+            >
+              <div className="text-5xl font-bold mb-2 text-[#F7A145]">200+</div>
+              <div className="text-lg text-white/90">Granite Varieties</div>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="text-center mt-16"
+        >
+          <p className="text-lg text-gray-600 mb-6">
+            Ready to transform your space with premium natural stones?
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link
+              to="/shop"
+              className="group bg-[#502b21] text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#F7A145] transition-all duration-300 shadow-lg hover:shadow-2xl inline-flex items-center gap-2"
+            >
+              Explore Our Collection
+              <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
+            </Link>
+            <Link
+              to="/contact"
+              className="bg-white text-[#502b21] px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-50 transition-all duration-300 border-2 border-[#502b21] shadow-lg hover:shadow-2xl"
+            >
+              Get a Quote
+            </Link>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
