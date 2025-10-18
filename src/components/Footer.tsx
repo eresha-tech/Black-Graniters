@@ -1,80 +1,82 @@
-import { MapPin, Phone, Mail, Facebook, Instagram, Twitter, Linkedin, ArrowRight } from 'lucide-react';
+import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
+import { getImageUrl } from '@/lib/utils';
 
 const Footer = () => {
   const shopCategories = [
-    { name: 'Vizag Blue', href: '#vizag-blue' },
-    { name: 'New Hassan Green', href: '#hassan-green' },
-    { name: 'Eresha Brown', href: '#eresha-brown' },
-    { name: 'Alaska Red', href: '#alaska-red' },
-    { name: 'Kashmir White', href: '#kashmir-white' },
-    { name: 'Absolute Black', href: '#absolute-black' },
-    { name: 'Steel Grey', href: '#steel-grey' },
-    { name: 'Tan Brown', href: '#tan-brown' }
+    { name: 'Granite Collection', href: '/shop/granite' },
+    { name: 'Marble Collection', href: '/shop/marble' },
+    { name: 'Sandstone Collection', href: '/shop/sandstone' },
+    { name: 'Onyx Collection', href: '/shop/onyx' },
+    { name: 'Quartzite Collection', href: '/shop/quartzite' },
+    { name: 'Tombstones', href: '/shop/other-products/tombstones-monuments' },
+    { name: 'Sculptures', href: '/shop/other-products/sculptures-carvings' },
+    { name: 'Countertops', href: '/shop/other-products/countertops' }
   ];
 
-  const pilotBlackGranite = [
-    { name: 'Vizag Blue', href: '#pilot-vizag-blue' },
-    { name: 'New Hassan Green', href: '#pilot-hassan-green' },
-    { name: 'Eresha Brown', href: '#pilot-eresha-brown' },
-    { name: 'Alaska Red', href: '#pilot-alaska-red' },
-    { name: 'Premium Black', href: '#premium-black' },
-    { name: 'Mirror Black', href: '#mirror-black' }
+  const popularGranites = [
+    { name: 'Vizag Blue', href: '/shop/granite/vizag-blue' },
+    { name: 'Hassan Green', href: '/shop/granite/hassan-green' },
+    { name: 'Eresha Brown', href: '/shop/granite/eresha-brown' },
+    { name: 'Alaska Red', href: '/shop/granite/alaska-red' },
+    { name: 'Kashmir White', href: '/shop/granite/kashmir-white' },
+    { name: 'Absolute Black', href: '/shop/granite/absolute-black' }
   ];
 
   const aboutUsLinks = [
-    { name: 'Ceramic Tiles', href: '#ceramic-tiles' },
-    { name: 'Teakwood Sandstone', href: '#teakwood-sandstone' },
-    { name: 'Countertops', href: '#countertops' },
-    { name: 'Tombstones', href: '#tombstones' },
-    { name: 'Our Story', href: '#our-story' },
-    { name: 'Quality Assurance', href: '#quality' },
-    { name: 'Sustainability', href: '#sustainability' }
+    { name: 'Our Story', href: '/about' },
+    { name: 'Quality Assurance', href: '/about#quality' },
+    { name: 'Sustainability', href: '/about#sustainability' },
+    { name: 'Manufacturing Process', href: '/about#process' },
+    { name: 'Export Excellence', href: '/about#export' },
+    { name: 'Certifications', href: '/about#certifications' },
+    { name: 'Global Reach', href: '/about#global' }
   ];
 
   const quickLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'Products', href: '#products' },
-    { name: 'Services', href: '#services' },
-    { name: 'Gallery', href: '#gallery' },
-    { name: 'Contact', href: '#contact' },
-    { name: 'Blog', href: '#blog' }
+    { name: 'Home', href: '/' },
+    { name: 'All Products', href: '/shop' },
+    { name: 'Request Quote', href: '/#quote' },
+    { name: 'Gallery', href: '/gallery' },
+    { name: 'Contact Us', href: '/contact' },
+    { name: 'Testimonials', href: '/#testimonials' }
   ];
 
   return (
     <footer className="bg-background border-t border-border">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6">
           {/* Shop Section */}
           <div>
-            <h3 className="text-lg font-bold text-foreground mb-6">Shop</h3>
+            <h3 className="text-xl font-bold text-foreground mb-6">Shop</h3>
             <ul className="space-y-3">
               {shopCategories.map((item) => (
                 <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className="text-muted-foreground hover:text-secondary transition-colors duration-200 text-sm"
+                  <Link
+                    to={item.href}
+                    className="text-muted-foreground hover:text-secondary transition-colors duration-200 text-base"
                   >
                     {item.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Pilot Black Granite Section */}
+          {/* Popular Granites Section */}
           <div>
-            <h3 className="text-lg font-bold text-foreground mb-6">Pilot Black Granite</h3>
+            <h3 className="text-xl font-bold text-foreground mb-6">Popular Granites</h3>
             <ul className="space-y-3">
-              {pilotBlackGranite.map((item) => (
+              {popularGranites.map((item) => (
                 <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className="text-muted-foreground hover:text-secondary transition-colors duration-200 text-sm"
+                  <Link
+                    to={item.href}
+                    className="text-muted-foreground hover:text-secondary transition-colors duration-200 text-base"
                   >
                     {item.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -82,16 +84,33 @@ const Footer = () => {
 
           {/* About Us Section */}
           <div>
-            <h3 className="text-lg font-bold text-foreground mb-6">About Us</h3>
+            <h3 className="text-xl font-bold text-foreground mb-6">About Us</h3>
             <ul className="space-y-3">
               {aboutUsLinks.map((item) => (
                 <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className="text-muted-foreground hover:text-secondary transition-colors duration-200 text-sm"
+                  <Link
+                    to={item.href}
+                    className="text-muted-foreground hover:text-secondary transition-colors duration-200 text-base"
                   >
                     {item.name}
-                  </a>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Quick Links Section */}
+          <div>
+            <h3 className="text-xl font-bold text-foreground mb-6">Quick Links</h3>
+            <ul className="space-y-3">
+              {quickLinks.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    to={item.href}
+                    className="text-muted-foreground hover:text-secondary transition-colors duration-200 text-base"
+                  >
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -99,43 +118,50 @@ const Footer = () => {
 
           {/* Certifications & Contact */}
           <div>
-            <h3 className="text-lg font-bold text-foreground mb-6">Certifications</h3>
+            <h3 className="text-xl font-bold text-foreground mb-6">Company & Certifications</h3>
             <div className="space-y-4 mb-8">
-              {/* Certification Logos */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-muted p-3 rounded-lg flex items-center justify-center">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-green-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-xs">FIEO</span>
-                  </div>
-                </div>
-                <div className="bg-muted p-3 rounded-lg flex items-center justify-center">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-xs">MSME</span>
-                  </div>
-                </div>
+
+
+              {/* FIEO Certification */}
+              <div className="bg-blue-50 p-3 rounded-lg flex items-center justify-center border border-blue-200">
+                <img
+                  src={getImageUrl('home/FIEO Logo Trans.webp')}
+                  alt="FIEO Certification"
+                  className="h-10 w-auto object-contain"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
               </div>
-              <div className="bg-muted p-3 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-secondary font-bold text-sm">#startupindia</div>
-                  <div className="text-xs text-muted-foreground">Recognized Startup</div>
-                </div>
+
+              {/* MSME Certification */}
+              <div className="bg-orange-50 p-3 rounded-lg flex items-center justify-center border border-orange-200">
+                <img
+                  src={getImageUrl('home/MSME.webp')}
+                  alt="MSME Certification"
+                  className="h-10 w-auto object-contain"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
+              </div>
+
+              {/* Startup India Recognition */}
+              <div className="bg-green-50 p-3 rounded-lg flex items-center justify-center border border-green-200">
+                <img
+                  src={getImageUrl('home/STARTUP.webp')}
+                  alt="#startupindia Recognition"
+                  className="h-10 w-auto object-contain"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
               </div>
             </div>
 
-            {/* Quick Links */}
-            <h4 className="text-md font-semibold text-foreground mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              {quickLinks.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className="text-muted-foreground hover:text-secondary transition-colors duration-200 text-sm"
-                  >
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
 
@@ -146,27 +172,27 @@ const Footer = () => {
             <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0 lg:space-x-8">
               {/* Logo */}
               <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-gradient-to-br from-secondary to-primary rounded-xl flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">BG</span>
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center">
+                  <img src={getImageUrl('/logo.png')} className="text-white font-bold text-lg" />
                 </div>
               </div>
 
               {/* Contact Details */}
               <div className="space-y-2">
                 <div className="flex items-start space-x-3">
-                  <MapPin className="h-4 w-4 text-secondary mt-1 flex-shrink-0" />
-                  <div className="text-sm text-muted-foreground">
+                  <MapPin className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
+                  <div className="text-base text-muted-foreground">
                     <div>20/360, West Patel Nagar, New Delhi, Central</div>
                     <div>Delhi, Delhi 110008</div>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Phone className="h-4 w-4 text-secondary flex-shrink-0" />
-                  <span className="text-sm text-muted-foreground">+91 9700159159</span>
+                  <Phone className="h-5 w-5 text-secondary flex-shrink-0" />
+                  <span className="text-base text-muted-foreground">+91 9700159159</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Mail className="h-4 w-4 text-secondary flex-shrink-0" />
-                  <span className="text-sm text-muted-foreground">care@graniters.com</span>
+                  <Mail className="h-5 w-5 text-secondary flex-shrink-0" />
+                  <span className="text-base text-muted-foreground">info@blackgraniters.com</span>
                 </div>
               </div>
             </div>
@@ -176,25 +202,25 @@ const Footer = () => {
               {/* Social Media */}
               <div className="flex space-x-4">
                 <a
-                  href="#"
+                  href="https://www.facebook.com/graniters/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/90 transition-colors duration-200"
                 >
                   <Facebook className="h-4 w-4" />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.instagram.com/graniters.india/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/90 transition-colors duration-200"
                 >
                   <Instagram className="h-4 w-4" />
                 </a>
                 <a
-                  href="#"
-                  className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/90 transition-colors duration-200"
-                >
-                  <Twitter className="h-4 w-4" />
-                </a>
-                <a
-                  href="#"
+                  href="https://in.linkedin.com/company/graniters"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/90 transition-colors duration-200"
                 >
                   <Linkedin className="h-4 w-4" />
@@ -214,7 +240,7 @@ const Footer = () => {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
-                <p className="text-xs text-muted-foreground mt-2 lg:text-right">
+                <p className="text-sm text-muted-foreground mt-2 lg:text-right">
                   Get updates on new products and offers
                 </p>
               </div>
@@ -228,11 +254,11 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
             <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6">
-              <p className="text-sm">Black Graniters ©2023. All Rights Reserved</p>
-              <div className="flex space-x-4 text-xs">
-                <a href="#" className="hover:text-secondary transition-colors">Privacy Policy</a>
-                <a href="#" className="hover:text-secondary transition-colors">Terms of Service</a>
-                <a href="#" className="hover:text-secondary transition-colors">Cookie Policy</a>
+              <p className="text-base">Black Graniters ©2024. All Rights Reserved</p>
+              <div className="flex space-x-4 text-sm">
+                <a href="/privacy-policy" className="hover:text-secondary transition-colors">Privacy Policy</a>
+                <a href="/terms-of-service" className="hover:text-secondary transition-colors">Terms of Service</a>
+                <a href="/cookie-policy" className="hover:text-secondary transition-colors">Cookie Policy</a>
               </div>
             </div>
           </div>
